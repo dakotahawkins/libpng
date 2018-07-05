@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/PNGConfigInternal.cmake)
+
+add_library(PNG::PNG INTERFACE IMPORTED)
+set_target_properties(PNG::PNG PROPERTIES INTERFACE_LINK_LIBRARIES libpng_libpng)
+
+get_target_property(PNG_INCLUDE_DIRS libpng_libpng INTERFACE_INCLUDE_DIRECTORIES)
+set(PNG_LIBRARIES PNG::PNG)
+
+set(PNG_VERSION_STRING "@PNGLIB_VERSION@")

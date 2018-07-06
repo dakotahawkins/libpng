@@ -609,6 +609,11 @@ function(png_add_test)
   endif()
 endfunction()
 
+set(EXE_LIBRARIES)
+if(BUILD_SHARED_LIBS)
+  set(EXE_LIBRARIES ${ZLIB_LIBRARY} ${M_LIBRARY})
+endif()
+
 if(PNG_TESTS)
   # Find test PNG files by globbing, but sort lists to ensure
   # consistency between different filesystems.
@@ -620,12 +625,12 @@ if(PNG_TESTS)
   set(PNGTEST_PNG "${CMAKE_CURRENT_SOURCE_DIR}/pngtest.png")
 
   add_executable(pngtest ${pngtest_sources})
-  target_link_libraries(pngtest png ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(pngtest png ${EXE_LIBRARIES})
 
   png_add_test(NAME pngtest COMMAND pngtest FILES "${PNGTEST_PNG}")
 
   add_executable(pngvalid ${pngvalid_sources})
-  target_link_libraries(pngvalid png ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(pngvalid png ${EXE_LIBRARIES})
 
   png_add_test(NAME pngvalid-gamma-16-to-8
                COMMAND pngvalid OPTIONS --gamma-16-to-8)
@@ -657,7 +662,7 @@ if(PNG_TESTS)
                COMMAND pngvalid OPTIONS --transform)
 
   add_executable(pngstest ${pngstest_sources})
-  target_link_libraries(pngstest png ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(pngstest png ${EXE_LIBRARIES})
 
   foreach(gamma_type 1.8 linear none sRGB)
     foreach(alpha_type none alpha)
@@ -712,7 +717,7 @@ if(PNG_TESTS)
   endforeach()
 
   add_executable(pngunknown ${pngunknown_sources})
-  target_link_libraries(pngunknown png ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(pngunknown png ${EXE_LIBRARIES})
 
   png_add_test(NAME pngunknown-discard COMMAND pngunknown OPTIONS --strict default=discard FILES "${PNGTEST_PNG}")
   png_add_test(NAME pngunknown-IDAT COMMAND pngunknown OPTIONS --strict default=discard IDAT=save FILES "${PNGTEST_PNG}")
@@ -723,14 +728,14 @@ if(PNG_TESTS)
   png_add_test(NAME pngunknown-vpAg COMMAND pngunknown OPTIONS --strict vpAg=if-safe FILES "${PNGTEST_PNG}")
 
   add_executable(pngimage ${pngimage_sources})
-  target_link_libraries(pngimage png ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(pngimage png ${EXE_LIBRARIES})
 
   png_add_test(NAME pngimage-quick COMMAND pngimage OPTIONS --list-combos --log FILES ${PNGSUITE_PNGS})
   png_add_test(NAME pngimage-full COMMAND pngimage OPTIONS --exhaustive --list-combos --log FILES ${PNGSUITE_PNGS})
 endif()
 
 add_executable(pngfix ${pngfix_sources})
-target_link_libraries(pngfix png ${ZLIB_LIBRARY} ${M_LIBRARY})
+target_link_libraries(pngfix png ${EXE_LIBRARIES})
 set(PNG_BIN_TARGETS pngfix)
 
 add_executable(png-fix-itxt ${png_fix_itxt_sources})

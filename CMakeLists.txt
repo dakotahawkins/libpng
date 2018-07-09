@@ -528,7 +528,10 @@ if(MSVC)
   # msvc does not append 'lib' - do it here to have consistent name
   set_target_properties(png PROPERTIES PREFIX "lib")
 endif()
-target_link_libraries(png PRIVATE ${ZLIB_LIBRARY} ${M_LIBRARY})
+target_link_libraries(png
+  PRIVATE
+    $<BUILD_INTERFACE:${ZLIB_LIBRARY}>
+    $<BUILD_INTERFACE:${M_LIBRARY}>)
 
 if(BUILD_SHARED_LIBS)
   if(MSVC)
@@ -562,7 +565,10 @@ if(PNG_FRAMEWORK)
     XCODE_ATTRIBUTE_INSTALL_PATH "@rpath"
     PUBLIC_HEADER "${libpng_public_hdrs}"
     OUTPUT_NAME png)
-  target_link_libraries(png_framework PRIVATE ${ZLIB_LIBRARY} ${M_LIBRARY})
+  target_link_libraries(png_framework
+    PRIVATE
+      $<BUILD_INTERFACE:${ZLIB_LIBRARY}>
+      $<BUILD_INTERFACE:${M_LIBRARY}>)
 endif()
 
 if(NOT PNG_LIB_TARGETS)
